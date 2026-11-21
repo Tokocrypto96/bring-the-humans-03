@@ -27,3 +27,10 @@ if (typeof video.url !== "string" || !/^https:\/\/www\.tiktok\.com\/@[^/]+\/vide
 
 mkdirSync(outputDir, { recursive: true });
 copyFileSync(join(botDir, "VIDEO.json"), join(outputDir, "VIDEO.json"));
+
+// Verify the copy: the written bytes must match the source exactly.
+const srcBytes = readFileSync(join(botDir, "VIDEO.json"));
+const outBytes = readFileSync(join(outputDir, "VIDEO.json"));
+if (!srcBytes.equals(outBytes)) {
+  throw new Error("copied VIDEO.json differs from the source");
+}
